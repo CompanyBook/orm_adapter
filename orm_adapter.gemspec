@@ -30,6 +30,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "datamapper", ">= 1.0"
   s.add_development_dependency "dm-sqlite-adapter", ">= 1.0"
   s.add_development_dependency "dm-active_model", ">= 1.0"
-  s.add_development_dependency "massive_record", ">= 0.2.0.beta"
+  s.add_development_dependency "massive_record", ">= 0.2.0.beta2"
 end
 
