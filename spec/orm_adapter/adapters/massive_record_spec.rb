@@ -21,7 +21,7 @@ else
         field :rating, :integer
       end
 
-      references_many :notes, :records_starts_from => :note_ids_starts_from
+      references_many :notes, :class_name => "MassiveRecordOrmSpec::Note", :records_starts_from => :note_ids_starts_from
 
 
 
@@ -50,7 +50,7 @@ else
       private
 
       def default_id
-        "owner.id-#{next_id}"
+        "#{owner.id}-#{next_id}"
       end
     end
 
@@ -77,7 +77,7 @@ else
       end
 
 
-      it_should_behave_like "example app with orm_adapter" do
+      it_should_behave_like "example app with orm_adapter", :skip_tests => [:find_first, :find_all] do
         let(:user_class) { User }
         let(:note_class) { Note }
       end
