@@ -14,6 +14,8 @@ else
     # Test classes
     #
     class User < MassiveRecord::ORM::Table
+      set_table_name 'orm_adapter_users'
+
       column_family :base do
         field :name
         field :rating, :integer
@@ -36,6 +38,8 @@ else
 
 
     class Note < MassiveRecord::ORM::Table
+      set_table_name 'orm_adapter_notes'
+
       column_family :base do
         field :body 
       end
@@ -63,12 +67,26 @@ else
     describe MassiveRecord::ORM::Base do
       include MassiveRecord::Rspec::SimpleDatabaseCleaner
 
+
       describe "the ORM adapter class" do
         subject { MassiveRecord::ORM::Base::OrmAdapter }
 
         its(:except_classes) { should include MassiveRecord::ORM::IdFactory }
         its(:model_classes) { should include User, Note }
         its(:model_classes) { should_not include *MassiveRecord::ORM::Base::OrmAdapter.except_classes }
+      end
+
+
+      it_should_behave_like "example app with orm_adapter" do
+        let(:user_class) { User }
+        let(:note_class) { Note }
+      end
+
+
+      describe User do
+        subject { User.to_adapter }
+
+        its(:column_names) { should include *User.attributes_schema.keys }
       end
     end
   end
