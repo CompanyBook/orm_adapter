@@ -18,7 +18,11 @@
 #     end
 #   end
 #
-shared_examples_for "example app with orm_adapter" do
+shared_examples_for "example app with orm_adapter" do |*args|
+  options = args.extract_options!
+  options[:skip_tests] ||= []
+
+
   
   def create_model(klass, attrs = {})
     klass.create!(attrs)
@@ -27,7 +31,7 @@ shared_examples_for "example app with orm_adapter" do
   def reload_model(model)
     model.class.find(model.id)
   end
-      
+
   describe "an ORM class" do
     subject { note_class }
   
@@ -80,7 +84,7 @@ shared_examples_for "example app with orm_adapter" do
       end
     end
   
-    describe "#find_first" do
+    describe "#find_first", :unless => options[:skip_tests].include?(:find_first) do
       describe "(conditions)" do
         it "should return first model matching conditions, if it exists" do
           user = create_model(user_class, :name => "Fred")
@@ -115,7 +119,7 @@ shared_examples_for "example app with orm_adapter" do
       end
     end
 
-    describe "#find_all" do
+    describe "#find_all", :unless => options[:skip_tests].include?(:find_all) do
       describe "(conditions)" do
         it "should return only models matching conditions" do
           user1 = create_model(user_class, :name => "Fred")
