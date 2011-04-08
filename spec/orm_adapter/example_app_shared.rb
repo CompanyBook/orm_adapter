@@ -18,6 +18,15 @@
 #     end
 #   end
 #
+#
+# If your ORM adapter for some reason does not support fully the find_first or
+# find_all you can skip the common tests for it by:
+# 
+#   it_should_behave_like "example app with orm_adapter", :skip_tests => [:find_first, :find_all] do
+#     let(:user_class) { User }
+#     let(:note_class) { Note }
+#   end
+#
 shared_examples_for "example app with orm_adapter" do |*args|
   options = args.extract_options!
   options[:skip_tests] ||= []

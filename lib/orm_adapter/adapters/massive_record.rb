@@ -22,7 +22,7 @@ class MassiveRecord::ORM::Base
 
 
 
-    def create!(attributes)
+    def create!(attributes = {})
       klass.create!(attributes)
     end
 
@@ -31,19 +31,20 @@ class MassiveRecord::ORM::Base
     end
 
     def get(id)
-      begin
-        klass.find(wrap_key(id))
+      klass.find(wrap_key(id))
+
       rescue MassiveRecord::ORM::RecordNotFound
         nil
-      end
     end
 
     def find_first(options = {})
-      nil
+      conditions, order = extract_conditions_and_order!(options)
+      klass.first(:conditions => conditions, :order => order)
     end
 
     def find_all(options = {})
-      [] 
+      conditions, order = extract_conditions_and_order!(options)
+      klass.all(:conditions => conditions, :order => order)
     end
   end
 end
